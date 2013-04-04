@@ -6,10 +6,10 @@ define(DEBUG,true); // Turn debug output on and off here.
 
 $handle = @fopen("/tmp/inputfile.txt", "r");
 if ($handle) {
-    while (($buffer = fgets($handle, 4096)) !== false) {
-        echo $buffer;
+    while (($line = fgets($handle, 4096)) !== false) {
+        echo $line;
 
-        $type = substr($buffer, 0, 2); // First Two Characters Are the type code
+        $type = substr($line, 0, 2); // First Two Characters Are the type code
         switch($type){
         	/**
         	 * 4.1 Header Record (HD)
@@ -29,22 +29,19 @@ if ($handle) {
         	 */
         	case 'HD': {
         		$header = array();
-        		$header['recordIdentity'] = substr($buffer, 0, 2); // Will always be HD
-        		$header['fileMainframeIdentity'] = trim( substr($buffer, 2, 2) );
-        		$header['dateOfExtract'] = trim( substr($buffer, 4, 6) );
-        		$header['timeOfExtract'] = trim( substr($buffer, 10, 4) );
-        		$header['currentFileRef'] = trim( substr($buffer, 14, 7) );
-        		$header['lastFileRef'] = trim( substr($buffer, 21, 7) );
-        		$header['bleedOff'] = trim( substr($buffer, 28, 1) );
-        		$header['version'] = trim( substr($buffer, 29, 1) );
-        		$header['userExtractStartDate'] = trim( substr($buffer,	30, 6) );
-        		$header['userExtractEndDate']	= trim( substr($buffer, 36, 6) );
+        		$header['recordIdentity'] = substr($line, 0, 2); // Will always be HD
+        		$header['fileMainframeIdentity'] = trim( substr($line, 2, 2) );
+        		$header['dateOfExtract'] = trim( substr($line, 4, 6) );
+        		$header['timeOfExtract'] = trim( substr($line, 10, 4) );
+        		$header['currentFileRef'] = trim( substr($line, 14, 7) );
+        		$header['lastFileRef'] = trim( substr($line, 21, 7) );
+        		$header['bleedOff'] = trim( substr($line, 28, 1) );
+        		$header['version'] = trim( substr($line, 29, 1) );
+        		$header['userExtractStartDate'] = trim( substr($line, 30, 6) );
+        		$header['userExtractEndDate']	= trim( substr($line, 36, 6) );
         		// We don't bother with the spare data.
 
-        		if(DEBUG){
-        			echo "\nHD: \n\n"
-        			print_r($header);
-        		}
+        		if(DEBUG){ echo "\n\nHD: \n"; print_r($header); }
 
         		break;
         	}
