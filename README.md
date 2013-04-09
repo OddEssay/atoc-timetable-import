@@ -10,6 +10,9 @@ Data Sources
 
 Date is provided at http://data.atoc.org/data-download - You'll need to sign up to get access.
 
+Casting of Data
+===============
+Because we plan to put the data into MongoDB where strings and numbers query differently, we cast strings as such when we need to make sure PHP doesn't miss identify a value as a number.
 
 Licence
 =======
