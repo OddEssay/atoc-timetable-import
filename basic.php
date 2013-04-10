@@ -2,7 +2,10 @@
 $startTimestamp = date('U');
 define('DEBUG',false); // Turn debug output on and off here.
 
-
+$c  = 0;
+$ta = 0;
+$td = 0;
+$aa = 0;
 
 $mongo = new MongoClient();
 // select a database
