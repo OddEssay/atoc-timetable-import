@@ -27,6 +27,7 @@ $timetables->ensureIndex("stops.location");
 
 $locations = $db->locations;
 $locations->ensureIndex("TIPLOC");
+$locations->ensureIndex("crs");
 
 if(FIRSTRUN === true){
 	$timetables->remove();
