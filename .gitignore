@@ -1,0 +1,9 @@
+# Vagrant info doesn't need to be in the repo
+.vagrant
+Vagrantfile
+
+# Any .out files are test data, we can ignore them.
+*.out
+
+# We don't want to add the source files to the git repo.
+*.MCA
