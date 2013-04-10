@@ -343,7 +343,8 @@ function readable_peak_memory_usage() {
 	return $string; 
 } 
 echo "\nTotal time: ".( ( date('U') - $startTimestamp ) / 60 )." mins.\n";
-echo "Missed: TA: " . $ta . " TD: " . $td . " AA: " . $aa . "TN: " . $tn . " BX: " . $bx . "CR: " . $cr . "LN: " . $ln . " Miss: " . $miss . "\n"; 
+echo "Total Lines: " . $c. "\n";
+echo "Missed: TA: " . $ta . " TD: " . $td . " AA: " . $aa . " TN: " . $tn . " BX: " . $bx . " CR: " . $cr . " LN: " . $ln . " Miss: " . $miss . "\n"; 
 echo "Memory Use: " . readable_memory_usage() . "\n";
 echo "Peak Memory: " . readable_peak_memory_usage() . "\n";
 ?>
