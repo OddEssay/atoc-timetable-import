@@ -25,6 +25,7 @@ if( isset( $_GET['to'] ) )  {
 if( count($errors) )
 {
 	header('Content-Type: application/json');
+	http_response_code(400); # HTTP 400 = 'Bad Request'
 	die( json_encode($errors) );
 }
 
@@ -40,12 +41,13 @@ $query = array( '$and' => array( array( "stops.tiploc" => $fromLocation['tiploc'
 
 $result = $timetables->find($query);
 
-foreach($result as $document){
-	$docArray[] = $document;
-}
-
 $docArray['from'] = $fromLocation;
 $docArray['to'] = $toLocation;
+$docArray['stops'] = array();
+foreach($result as $document){
+	$docArray['stops'][] = $document;
+}
+
 
 header('Content-Type: application/json');
 echo json_encode($docArray);
