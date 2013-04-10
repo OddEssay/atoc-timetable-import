@@ -75,9 +75,9 @@ if ($handle) {
    				$detail['cateType'] = substr($line, 35, 1);
    				$detail['tiploc'] = trim( substr($line, 36, 7) );
    				
-   				$geo['easting'] = substr($line, 52, 5);
-   				$geo['estimated'] = substr($line, 57, 1);
-   				$geo['northing'] = substr($line, 58, 5);
+   				$geo['easting'] = (int)substr($line, 52, 5);
+   				$geo['estimated'] = ( substr($line, 57, 1) === 'E' ) ? true : false; # If Estimated, set to true, else set to false.
+   				$geo['northing'] = (int)substr($line, 58, 5);
    				
    				$detail['geo'] = $geo;
 
