@@ -11,6 +11,7 @@ define('DEBUG',false); // Turn debug output on and off here.
 define('FIRSTRUN',true); // Do additional setup for first run.
 
 $c = 0;
+$miss = 0;
 
 MongoCursor::$timeout = -1; // Stop timeouts (Particularly with remove on big result sets)
 
