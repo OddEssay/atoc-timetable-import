@@ -39,6 +39,7 @@ $locations->ensureIndex("crs");
 // Based on the specification at http://www.atoc.org/clientfiles/File/RSPS5004%20v27.pdf
 
 $handle = @fopen("/vagrant/TTISF036.MCA", "r");
+
 if ($handle) {
     while (($line = fgets($handle, 4096)) !== false) {
     	++$c;
@@ -214,10 +215,11 @@ if ($handle) {
         	case 'LO': { # an origin location record
         		$stop = array();
         		$stop['recordIdentity'] = trim( substr($line, 0, 2) );
-        		$stop['tiploc'] = trim( substr($line, 2, 8) );
-        		$stop['scheduledDeparture'] = trim( substr($line, 11, 4) ); // We only capture the first 4 parts of scheduledDeparture, and convert H to .5 seconds in next line.
-        		if(substr($line, 10, 1) === 'H' ){ $stop['scheduledDeparture'] = $stop['scheduledDeparture'] + 0.5; }
-        		$stop['publicDeparture'] = trim( substr($line, 15, 4) );
+        		$stop['tiploc'] = trim( substr($line, 2,7) ); # We split the tiploc and suffix for our records.
+        		$stop['tiplocSuffix'] = substr($line, 9, 1);
+        		$stop['scheduledDeparture'] = (float)trim( substr($line, 10, 4) ); // We only capture the first 4 parts of scheduledDeparture, and convert H to .5 seconds in next line.
+        		if(substr($line, 14, 1) === 'H' ){ $stop['scheduledDeparture'] = $stop['scheduledDeparture'] + 0.5; }
+        		$stop['publicDeparture'] = (int)trim( substr($line, 15, 4) );
         		$stop['platform'] = trim( substr($line, 22, 3) );
 
         		$schedule['stops'][] = $stop;
@@ -245,13 +247,14 @@ if ($handle) {
         	case 'LI': { # all intermediate location records in journey sequence
         		$stop = array();
         		$stop['recordIdentity'] = trim( substr($line, 0, 2) );
-        		$stop['tiploc'] = trim( substr($line, 2, 8) );
-        		$stop['scheduledArrival'] = trim( substr($line, 11, 4) ); // We only capture the last 4 parts of scheduledArrival, and convert H to .5 seconds in next line.
-        		if(substr($line, 10, 1) === 'H' ){ $stop['scheduledArrival'] = $stop['scheduledArrival'] + 0.5; }
-        		$stop['scheduledDeparture'] = trim( substr($line, 16, 4) ); // We only capture the last 4 parts of scheduledDeparture, and convert H to .5 seconds in next line.
-        		if(substr($line, 15, 1) === 'H' ){ $stop['scheduledDeparture'] = $stop['scheduledDeparture'] + 0.5; }
-        		$stop['publicArrival'] = trim( substr($line, 24, 4) );
-        		$stop['publicDeparture'] = trim( substr($line, 28, 4) );
+        		$stop['tiploc'] = trim( substr($line, 2,7) ); # We split the tiploc and suffix for our records.
+        		$stop['tiplocSuffix'] = substr($line, 9, 1);
+        		$stop['scheduledArrival'] = (float)trim( substr($line, 10, 4) ); // We only capture the first 4 parts of scheduledArrival, and convert H to .5 seconds in next line.
+        		if(substr($line, 14, 1) === 'H' ){ $stop['scheduledArrival'] = $stop['scheduledArrival'] + 0.5; }
+        		$stop['scheduledDeparture'] = (float)trim( substr($line, 15, 4) ); // We only capture the first 4 parts of scheduledDeparture, and convert H to .5 seconds in next line.
+        		if(substr($line, 16, 1) === 'H' ){ $stop['scheduledDeparture'] = $stop['scheduledDeparture'] + 0.5; }
+        		$stop['publicArrival'] = (int)trim( substr($line, 24, 4) );
+        		$stop['publicDeparture'] = (int)trim( substr($line, 28, 4) );
         		$stop['platform'] = trim( substr($line, 22, 3) );
 
         		$schedule['stops'][] = $stop;
@@ -261,7 +264,33 @@ if ($handle) {
         		++$cr;
         		break;
         	}
+        	/**
+        	 * 4.7 Terminating Location
+        	 * Field Name 			Start 	Size 	Format 	Comment
+			 * Record Identity  	0 		2 		A 		value LT
+			 * Location 			2 		8 		A 		LOCATION (TIPLOC + Suffix) 
+			 * Scheduled Arrival 	10 		5 		A 		SCHED-ARR-TIME. Format hhmm 24-hr clock + optional „H‟ = half-minute
+			 * Public Arrival 		15 		4 		N 		PUBLIC-ARR-TIME. Format hhmm 24-hr clock
+			 * Platform 			19 		3 		A 		PLATFORM – See note (1) 
+			 * Path 				22 		3 		A 		PATH – See note (2) 
+			 * Activity 			25 		12 		A 		ACTIVITY - 6x2 – See Appendix A and note (3) 
+			 * Spare 				37 		43 		A
+			 */
         	case 'LT': { # terminating location record
+
+        		$stop = array();
+        		$stop['recordIdentity'] = substr($line, 0, 2); // Always LT
+        		$stop['tiploc'] = trim( substr($line, 2,7) ); # We split the tiploc and suffix for our records.
+        		$stop['tiplocSuffix'] = substr($line, 9, 1);
+        		$stop['scheduledArrival'] = (float)substr($line, 10, 4);
+        		if(substr($line, 14, 1) === 'H' ){ $stop['scheduledArrival'] = $stop['scheduledArrival'] + 0.5; }
+        		$stop['publicArrival'] = (int)trim( substr($line, 15, 4) );
+        		$stop['platform'] = trim( substr($line, 19, 3) );
+        		$stop['path'] = trim( substr($line, 22, 3) );
+        		$stop['activity'] = trim( substr($line, 25, 12) ); // Will always be 'TF' for Train Finish
+
+        		$schedule['stops'][] = $stop;
+
         		$timetables->insert($schedule); 
         		unset($schedule); # Not unsetting the $schedule results in MongoDB reusing _id and getting dup index errors.
         		break;
