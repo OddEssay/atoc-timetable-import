@@ -195,7 +195,6 @@ if ($handle) {
         		$stop = array();
         		$stop['recordIdentity'] = trim( substr($line, 0, 2) );
         		$stop['location'] = trim( substr($line, 2, 8) );
-        		$stop['crs'] = substr($line, 2, 3);
         		$stop['scheduledDeparture'] = trim( substr($line, 11, 4) ); // We only capture the first 4 parts of scheduledDeparture, and convert H to .5 seconds in next line.
         		if(substr($line, 10, 1) === 'H' ){ $stop['scheduledDeparture'] = $stop['scheduledDeparture'] + 0.5; }
         		$stop['publicDeparture'] = trim( substr($line, 15, 4) );
@@ -227,7 +226,6 @@ if ($handle) {
         		$stop = array();
         		$stop['recordIdentity'] = trim( substr($line, 0, 2) );
         		$stop['location'] = trim( substr($line, 2, 8) );
-        		$stop['crs'] = substr($line, 2, 3);
         		$stop['scheduledArrival'] = trim( substr($line, 11, 4) ); // We only capture the last 4 parts of scheduledArrival, and convert H to .5 seconds in next line.
         		if(substr($line, 10, 1) === 'H' ){ $stop['scheduledArrival'] = $stop['scheduledArrival'] + 0.5; }
         		$stop['scheduledDeparture'] = trim( substr($line, 16, 4) ); // We only capture the last 4 parts of scheduledDeparture, and convert H to .5 seconds in next line.
