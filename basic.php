@@ -1,11 +1,16 @@
 <?php
 $startTimestamp = date('U');
 define('DEBUG',false); // Turn debug output on and off here.
+define('FIRSTRUN',true); // Do additional setup for first run.
+
+
 
 $c  = 0;
 $ta = 0;
 $td = 0;
 $aa = 0;
+
+MongoCursor::$timeout = -1; // Stop timeouts (Particularly with remove on big result sets)
 
 $mongo = new MongoClient();
 // select a database
@@ -17,6 +22,11 @@ $timetables->ensureIndex("stops.location");
 
 $locations = $db->locations;
 $locations->ensureIndex("TIPLOC");
+
+if(FIRSTRUN === true){
+	$timetables->remove();
+	$locations->remove();	
+}
 
 // Based on the specification at http://www.atoc.org/clientfiles/File/RSPS5004%20v27.pdf
 
@@ -262,6 +272,36 @@ if ($handle) {
     fclose($handle);
 }
 
+
+/*
+ * Helper Memory report from :
+ */
+function readable_memory_usage() { 
+	$mem_usage = memory_get_usage(true); 
+
+	if ($mem_usage < 1024) 
+	    $string = $mem_usage." bytes"; 
+	elseif ($mem_usage < 1048576) 
+	    $string = round($mem_usage/1024,2)." kilobytes"; 
+	else 
+	    $string = round($mem_usage/1048576,2)." megabytes"; 
+	    
+	return $string; 
+}
+function readable_peak_memory_usage() { 
+	$mem_usage = memory_get_peak_usage(true); 
+
+	if ($mem_usage < 1024) 
+	    $string = $mem_usage." bytes"; 
+	elseif ($mem_usage < 1048576) 
+	    $string = round($mem_usage/1024,2)." kilobytes"; 
+	else 
+	    $string = round($mem_usage/1048576,2)." megabytes"; 
+	    
+	return $string; 
+} 
 echo "\nTotal time: ".( ( date('U') - $startTimestamp ) / 60 )." mins.\n";
-echo "Missed: TA: " . $ta . " TD: " . $td . " AA: " . $aa . "\n";  
+echo "Missed: TA: " . $ta . " TD: " . $td . " AA: " . $aa . "\n"; 
+echo "Memory Use: " . readable_memory_usage() . "\n";
+echo "Peak Memory: " . readable_peak_memory_usage() . "\n";
 ?>
