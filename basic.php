@@ -23,16 +23,18 @@ $db = $mongo->trains;
 
 // select a collection (analogous to a relational database's table)
 $timetables = $db->timetables;
-$timetables->ensureIndex("stops.tiploc");
 
 $locations = $db->locations;
-$locations->ensureIndex("tiploc");
-$locations->ensureIndex("crs");
 
 if(FIRSTRUN === true){
 	$timetables->remove();
 	$locations->remove();	
 }
+
+// Index after removing old data so we don't add new indexes to data we are going to remove!
+$timetables->ensureIndex("stops.tiploc");
+$locations->ensureIndex("tiploc");
+$locations->ensureIndex("crs");
 
 // Based on the specification at http://www.atoc.org/clientfiles/File/RSPS5004%20v27.pdf
 
