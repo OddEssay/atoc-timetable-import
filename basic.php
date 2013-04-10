@@ -9,6 +9,11 @@ $c  = 0;
 $ta = 0;
 $td = 0;
 $aa = 0;
+$tn = 0;
+$bx = 0;
+$cr = 0;
+$ln = 0;
+$miss = 0;
 
 MongoCursor::$timeout = -1; // Stop timeouts (Particularly with remove on big result sets)
 
@@ -181,9 +186,11 @@ if ($handle) {
         	}
         	case 'BX': { # a basic schedule extra details record
         		# Ignored in this version.
+        		++$bx;
         		break;
         	}
         	case 'TN': { # train specific note records, if present
+        		++$tn;
         		break;
         	}
         	/**
@@ -248,7 +255,8 @@ if ($handle) {
         		break;
         	}
         	case 'CR': { #preceded by a Change en Route, if present, for the location
-
+        		++$cr;
+        		break;
         	}
         	case 'LT': { # terminating location record
         		$timetables->insert($schedule); 
@@ -256,11 +264,13 @@ if ($handle) {
         		break;
         	}
         	case 'LN': { # location specific note records (These may follow any LO, LI or LT records)
-
+        		++$ln;
+        		break;
         	}
 
         	default: {
         		if(DEBUG){ echo "Uncaught line: ".$line; }
+        		++$miss;
         	}
 
         }
@@ -301,7 +311,7 @@ function readable_peak_memory_usage() {
 	return $string; 
 } 
 echo "\nTotal time: ".( ( date('U') - $startTimestamp ) / 60 )." mins.\n";
-echo "Missed: TA: " . $ta . " TD: " . $td . " AA: " . $aa . "\n"; 
+echo "Missed: TA: " . $ta . " TD: " . $td . " AA: " . $aa . "TN: " . $tn . " BX: " . $bx . "CR: " . $cr . "LN: " . $ln . " Miss: " . $miss . "\n"; 
 echo "Memory Use: " . readable_memory_usage() . "\n";
 echo "Peak Memory: " . readable_peak_memory_usage() . "\n";
 ?>
