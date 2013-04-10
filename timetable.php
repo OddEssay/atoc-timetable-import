@@ -36,7 +36,7 @@ $toLocation = $locations->findOne(['crs' => $to]);
 // Example: db.timetables.find( { $and: [ { "stops.location":"STMCHLS" } ], "stops.location": "LVRPLCH" } );
 // TODO: Better way to structure query?
 
-$query = array( '$and' => array( array( "stops.location" => $fromLocation['tiploc'] ) ), "stops.location" => $toLocation['tiploc'] );
+$query = array( '$and' => array( array( "stops.tiploc" => $fromLocation['tiploc'] ) ), "stops.tiploc" => $toLocation['tiploc'] );
 
 $result = $timetables->find($query);
 
