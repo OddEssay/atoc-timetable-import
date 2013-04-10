@@ -220,7 +220,7 @@ if ($handle) {
         		$stop['scheduledDeparture'] = (float)trim( substr($line, 10, 4) ); // We only capture the first 4 parts of scheduledDeparture, and convert H to .5 seconds in next line.
         		if(substr($line, 14, 1) === 'H' ){ $stop['scheduledDeparture'] = $stop['scheduledDeparture'] + 0.5; }
         		$stop['publicDeparture'] = (int)trim( substr($line, 15, 4) );
-        		$stop['platform'] = trim( substr($line, 22, 3) );
+        		$stop['platform'] = trim( substr($line, 19, 3) );
 
         		$schedule['stops'][] = $stop;
         		break;
@@ -233,16 +233,16 @@ if ($handle) {
 			 * Scheduled Arrival 		 10 	5 		A 		SCHED-ARR-TIME Format hhmm 24-hr clock + optional „H‟ = half-minute
 			 * Scheduled Departure 		 15 	5 		A 		SCHED-DEP-TIME Format hhmm 24-hr clock + optional „H‟ = half-minute
 			 * Scheduled Pass 			 20 	5 		A 		SCHED-PASS Format hhmm 24-hr clock + optional „H‟ = half-minute
-			 * Public Arrival 			 24 	4 		N 		PUBLIC-ARR-TIME. Format hhmm 24-hr clock
-			 * Public Departure			 28 	4 		N 		PUBLIC-DEP-TIME. Format hhmm 24-hr clock
-			 * Platform 				 32 	3 		A 		PLATFORM – See note (1)
-			 * Line 					 35 	3 		A 		LINE– See note (2)
-			 * Path 					 38 	3 		A 		PATH– See note (3)
-			 * Activity 				 41 	12 		A 		ACTIVITY - 6x2. See Appendix A and note (4)
-			 * Engineering Allowance 	 53 	2 		A 		ENG-ALLOW – See Appendix A
-			 * Pathing Allowance 		 55 	2 		A 		PATH-TIME – See Appendix A
-			 * Performance Allowance 	 57 	2 		A 		PERFORM-ALLOW – See Appendix A
-			 * Spare 					 59 	20 		A
+			 * Public Arrival 			 25 	4 		N 		PUBLIC-ARR-TIME. Format hhmm 24-hr clock
+			 * Public Departure			 29 	4 		N 		PUBLIC-DEP-TIME. Format hhmm 24-hr clock
+			 * Platform 				 33 	3 		A 		PLATFORM – See note (1)
+			 * Line 					 36 	3 		A 		LINE– See note (2)
+			 * Path 					 39 	3 		A 		PATH– See note (3)
+			 * Activity 				 42 	12 		A 		ACTIVITY - 6x2. See Appendix A and note (4)
+			 * Engineering Allowance 	 54 	2 		A 		ENG-ALLOW – See Appendix A
+			 * Pathing Allowance 		 56 	2 		A 		PATH-TIME – See Appendix A
+			 * Performance Allowance 	 58 	2 		A 		PERFORM-ALLOW – See Appendix A
+			 * Spare 					 60 	20 		A
 			 */
         	case 'LI': { # all intermediate location records in journey sequence
         		$stop = array();
@@ -253,9 +253,9 @@ if ($handle) {
         		if(substr($line, 14, 1) === 'H' ){ $stop['scheduledArrival'] = $stop['scheduledArrival'] + 0.5; }
         		$stop['scheduledDeparture'] = (float)trim( substr($line, 15, 4) ); // We only capture the first 4 parts of scheduledDeparture, and convert H to .5 seconds in next line.
         		if(substr($line, 16, 1) === 'H' ){ $stop['scheduledDeparture'] = $stop['scheduledDeparture'] + 0.5; }
-        		$stop['publicArrival'] = (int)trim( substr($line, 24, 4) );
-        		$stop['publicDeparture'] = (int)trim( substr($line, 28, 4) );
-        		$stop['platform'] = trim( substr($line, 22, 3) );
+        		$stop['publicArrival'] = (int)trim( substr($line, 25, 4) );
+        		$stop['publicDeparture'] = (int)trim( substr($line, 29, 4) );
+        		$stop['platform'] = trim( substr($line, 33, 3) );
 
         		$schedule['stops'][] = $stop;
         		break;
