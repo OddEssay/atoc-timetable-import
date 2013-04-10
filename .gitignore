@@ -7,3 +7,4 @@ Vagrantfile
 
 # We don't want to add the source files to the git repo.
 *.MCA
+*.MSN
