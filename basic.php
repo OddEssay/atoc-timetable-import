@@ -3,7 +3,7 @@ $startTimestamp = date('U');
 define('DEBUG',false); // Turn debug output on and off here.
 define('FIRSTRUN',true); // Do additional setup for first run.
 
-
+$estLines = 6100000;
 
 $c  = 0;
 $ta = 0;
@@ -27,7 +27,9 @@ $timetables = $db->timetables;
 $locations = $db->locations;
 
 if(FIRSTRUN === true){
+	echo "Pre-Tick: Removing old timetables\n";
 	$timetables->remove();
+	echo "Pre-Tick: Removing old locations\n";
 	$locations->remove();	
 }
 
@@ -43,7 +45,7 @@ $handle = @fopen("/vagrant/TTISF036.MCA", "r");
 if ($handle) {
     while (($line = fgets($handle, 4096)) !== false) {
     	++$c;
-    	if( $c % 1000 === 0 ) { echo "Tick: ".number_format($c)."\n"; }
+    	if( $c % 1000 === 0 ) { echo "Tick: ".number_format($c). " (" . number_format( 100 - ( ( $estLines - $c ) / $estLines * 100 ), 4 ) . "%)\n"; }
         $type = substr($line, 0, 2); // First Two Characters Are the type code
         switch($type){
         	/**
