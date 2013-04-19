@@ -34,10 +34,10 @@ $toLocation = $locations->findOne(['crs' => $to]);
 
 //echo "Searching Train From: ".$fromLocation['tpsDescription'] . "(" . $fromLocation['name'] . ") To ".$toLocation['tpsDescription']. "(" . $toLocation['name'] . ") \n";
 
-// Example: db.timetables.find( { $and: [ { "stops.location":"STMCHLS" } ], "stops.location": "LVRPLCH" } );
+// Example:  "stops.tiploc": { $all: ["STMCHLS","LVRPLCH"] } }
 // TODO: Better way to structure query?
 
-$query = array( '$and' => array( array( "stops.tiploc" => $fromLocation['tiploc'] ) ), "stops.tiploc" => $toLocation['tiploc'] );
+$query = array( "stops.tiploc" =>  array( '$all' => array( $fromLocation['tiploc'],$toLocation['tiploc'] ) ) );
 
 $result = $timetables->find($query);
 
