@@ -267,6 +267,7 @@ if ($handle) {
         		break;
         	}
         	/**
+             * 
         	 * 4.7 Terminating Location
         	 * Field Name 			Start 	Size 	Format 	Comment
 			 * Record Identity  	0 		2 		A 		value LT
