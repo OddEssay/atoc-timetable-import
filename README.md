@@ -30,3 +30,7 @@ FAQ
 How Long Does The Import Take?
 ------------------------------
 On a virtual machine running on Windows 8, with SSD the import takes around 10 mins. On a Bytemark BigV VM, using SATA disks it takes around 20 mins.
+
+Is There A Slide Show About Why You Made This and How It Works?
+---------------------------------------------------------------
+Funny you should ask, there's a copy of the slides from my Liverpool Geek Up Talk at: https://docs.google.com/presentation/d/1IlP-BNhZckibUC8D6k79npmsMsi-x3IkfjfJ_Z-16Vs/edit?usp=sharing
