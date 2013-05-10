@@ -29,7 +29,7 @@ if( count($errors) )
 	die( json_encode($errors) );
 }
 
-$fromLocation = $locations->find(['crs' => $from])->getNext();
+$fromLocation = $locations->findOne(['crs' => $from]);
 $toLocation = $locations->findOne(['crs' => $to]);
 
 //echo "Searching Train From: ".$fromLocation['tpsDescription'] . "(" . $fromLocation['name'] . ") To ".$toLocation['tpsDescription']. "(" . $toLocation['name'] . ") \n";
