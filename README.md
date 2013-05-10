@@ -15,6 +15,8 @@ Date is provided at http://data.atoc.org/data-download - You'll need to sign up 
 Data Format Documentation
 =========================
 The data format documentation is lifted directly from the ATOC CIF documentation.
+In many fields the data is padded with whitespace so it's important to trim() the values before inserting them into MongoDB.
+
 
 REST Based API
 ==============
