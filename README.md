@@ -16,6 +16,11 @@ Data Format Documentation
 =========================
 The data format documentation is lifted directly from the ATOC CIF documentation.
 
+REST Based API
+==============
+Under the public directory is the foundation of a REST API, using the PHP Micro Framework Flight. 
+Some of the code requires PHP 5.4, mostly because I used the new [] format for defining Arrays.
+
 
 Casting of Data
 ===============
