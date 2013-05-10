@@ -43,9 +43,9 @@ $result = $timetables->find($query);
 
 $docArray['from'] = $fromLocation;
 $docArray['to'] = $toLocation;
-$docArray['stops'] = array();
+$docArray['schedule'] = array();
 foreach($result as $document){
-	$docArray['stops'][] = $document;
+	$docArray['schedule'][] = $document;
 }
 
 
