@@ -11,3 +11,6 @@ Vagrantfile
 
 # We don't need to worry about files used by cloud9 (c9.io)
 .c9revisions
+
+# The bin directory is used for PHPUnit when on Cloud9, so we don't want to have it in git.
+bin
